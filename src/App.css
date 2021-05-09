@@ -25,6 +25,11 @@
   color: white;
 }
 
+.backgroundChange {
+   background-color: grey;
+  color: white;
+}
+
 .App-link {
   color: #61dafb;
 }
