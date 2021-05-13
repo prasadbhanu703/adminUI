@@ -24,6 +24,43 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
+.webPageStyling{
+  display:flex;
+  flex: 20%;
+  justify-content: space-between;
+  border-top: 1px solid black;
+}
+.webPageStyling div {
+  width: 20%;
+  display: table;
+  text-align: left;
+  white-space: normal ;
+  justify-content: space-between;
+  padding: 10px;
+}
+.lowerButtonsStyling {
+  display: flex;
+  justify-content: space-evenly;
+}
+.lowerButtonsStyling div button{
+border-radius: 15px;
+color: black;
+background-color: rgb(20, 171, 221);
+}
+.buttonsStyling {
+  border-radius: 15px;
+color: black;
+background-color: rgb(20, 171, 221);
+}
+@media screen and (max-width : 836px) {
+  .webPageStyling div {
+    display: flex;
+    position: relative;
+    word-wrap: break-word;
+    display: flex;
+  flex-direction: column;
+  }
+} 
 
 .backgroundChange {
    background-color: grey;
