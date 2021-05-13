@@ -17,7 +17,9 @@ const HomePage = (props) => {
   const [clicked, setClicked] = useState("");
 
   const itemsPerPage = 10;
-  const totalPages = Math.ceil(info.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredInfo.length / itemsPerPage);
+  const leftElements = filteredInfo.length % itemsPerPage;
+  console.log("leftElements", leftElements)
 
   useEffect(() => {
     fetch(
@@ -37,9 +39,11 @@ const HomePage = (props) => {
   useEffect(() => {
     setFilteredInfo(info);
   }, [info]);
+
   useEffect(() => {
     setAllcheckBoxes(false);
   }, [currentPage]);
+
   const updateInput = (evt) => {
     setInput(evt.target.value);
 
@@ -66,8 +70,12 @@ const HomePage = (props) => {
   };
 
   const deleteAllHandler = (items) => {
-    info.splice(items[0], 10);
+    if(items.length > 1) {
+      info.splice(items[0],(currentPage === totalPages ?  leftElements : 10) );
+    }
+    
     setInfo(info);
+    // console.log(info)
     setFilteredInfo(info);
     setCheckBoxes([]);
     setAllcheckBoxes(false);
@@ -83,28 +91,27 @@ const HomePage = (props) => {
       setCheckBoxes(arr);
     }
 
-    console.log(checkedBoxes);
-  };
+    };
 
   const toggleAllCheckBoxes = (evt, currentPage) => {
     setAllcheckBoxes((prev) => !prev);
     let arr = checkedBoxes;
     if (evt.target.checked) {
       for (
-        let i = (currentPage - 1) * itemsPerPage;
-        i < currentPage * itemsPerPage;
+        let i = 0;
+        i < ((currentPage === totalPages) && leftElements > 0 ?  leftElements : 10)  ;
         i++
       ) {
-        info[i].checked = true;
-        const val = i;
+        console.log(i)
+        const val = i + (currentPage - 1) * itemsPerPage;
         arr.push(val.toString());
       }
       setCheckBoxes(arr);
       console.log("checkedBoxes", checkedBoxes);
     } else {
       for (
-        let i = (currentPage - 1) * itemsPerPage;
-        i < currentPage * itemsPerPage;
+        let i = 0;
+        i < ((currentPage === totalPages) && leftElements > 0 ?  leftElements : 10);
         i++
       ) {
         const val = i;
@@ -115,8 +122,7 @@ const HomePage = (props) => {
   };
 
   const currentInfoList = filteredInfo.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
+    (currentPage - 1) * itemsPerPage, currentPage*itemsPerPage
   );
 
   return (
@@ -161,7 +167,7 @@ const HomePage = (props) => {
               type="checkbox"
               value={allCheckBoxes}
               checked={
-                allCheckBoxes || checkedBoxes.find((p) => p.id === items.id)
+                allCheckBoxes ? true : checkedBoxes.find((p) => p.id === items.id)
               }
               onChange={(e) => toggleCheckbox(e, items)}
             />
