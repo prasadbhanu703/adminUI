@@ -19,7 +19,6 @@ const HomePage = (props) => {
   const itemsPerPage = 10;
   const totalPages = Math.ceil(filteredInfo.length / itemsPerPage);
   const leftElements = filteredInfo.length % itemsPerPage;
-  console.log("leftElements", leftElements)
 
   useEffect(() => {
     fetch(
@@ -50,13 +49,12 @@ const HomePage = (props) => {
     setFilteredInfo(
       info.filter(
         (items) =>
-          (items.name &&
-            items.name.toLowerCase().includes(input.toLowerCase())) ||
+          (
+          items.name.toLowerCase().includes(input.toLowerCase())) ||
           items.email.toLowerCase().includes(input.toLowerCase()) ||
           items.role.toLowerCase().includes(input.toLowerCase())
       )
     );
-    console.log("filterd array", filteredInfo);
   };
 
   const editHandler = (evt) => {
@@ -70,12 +68,11 @@ const HomePage = (props) => {
   };
 
   const deleteAllHandler = (items) => {
-    if(items.length > 1) {
-      info.splice(items[0],(currentPage === totalPages ?  leftElements : 10) );
+    if (items.length > 1) {
+      info.splice(items[0], currentPage === totalPages ? leftElements : 10);
     }
-    
+
     setInfo(info);
-    // console.log(info)
     setFilteredInfo(info);
     setCheckBoxes([]);
     setAllcheckBoxes(false);
@@ -90,30 +87,19 @@ const HomePage = (props) => {
       arr.pop(item.id);
       setCheckBoxes(arr);
     }
-
-    };
+  };
 
   const toggleAllCheckBoxes = (evt, currentPage) => {
     setAllcheckBoxes((prev) => !prev);
     let arr = checkedBoxes;
     if (evt.target.checked) {
-      for (
-        let i = 0;
-        i < ((currentPage === totalPages) && leftElements > 0 ?  leftElements : 10)  ;
-        i++
-      ) {
-        console.log(i)
+      for ( let i = 0; i < (currentPage === totalPages ? leftElements : 10); i++ ) {
         const val = i + (currentPage - 1) * itemsPerPage;
         arr.push(val.toString());
       }
       setCheckBoxes(arr);
-      console.log("checkedBoxes", checkedBoxes);
     } else {
-      for (
-        let i = 0;
-        i < ((currentPage === totalPages) && leftElements > 0 ?  leftElements : 10);
-        i++
-      ) {
+      for (let i = 0; i < (currentPage === totalPages ? leftElements : 10); i++) {
         const val = i;
         arr.pop(val.toString());
       }
@@ -121,16 +107,11 @@ const HomePage = (props) => {
     }
   };
 
-  const currentInfoList = filteredInfo.slice(
-    (currentPage - 1) * itemsPerPage, currentPage*itemsPerPage
-  );
+  const currentInfoList = filteredInfo.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   return (
     <div>
-      <input
-        type="text"
-        value={input}
-        onChange={updateInput}
+      <input type="text" value={input} onChange={updateInput}
         placeholder="search by name email or role"
         style={{ margin: "10px", width: "80%" }}
       />
@@ -142,18 +123,10 @@ const HomePage = (props) => {
           checked={allCheckBoxes}
           onChange={(evt) => toggleAllCheckBoxes(evt, currentPage)}
         />
-        <div>
-          <b>Name</b>
-        </div>
-        <div>
-          <b>Email</b>
-        </div>
-        <div>
-          <b>Role</b>
-        </div>
-        <div>
-          <b>Actions</b>
-        </div>
+        <div> <b>Name</b> </div>
+        <div> <b>Email</b> </div>
+        <div> <b>Role</b> </div>
+        <div> <b>Actions</b> </div>
       </div>
       {currentInfoList.map((items) => {
         return (
@@ -167,27 +140,19 @@ const HomePage = (props) => {
               type="checkbox"
               value={allCheckBoxes}
               checked={
-                allCheckBoxes ? true : checkedBoxes.find((p) => p.id === items.id)
+                allCheckBoxes
+                  ? true
+                  : checkedBoxes.find((p) => p.id === items.id)
               }
               onChange={(e) => toggleCheckbox(e, items)}
             />
             {editMode && editItemId === items.id ? (
               <>
-                <textarea
-                  id={items.id}
-                  type="text"
-                  placeholder={items.name}
-                  value={edit}
+                <textarea id={items.id} type="text" placeholder={items.name} value={edit}
                   onChange={editHandler}
-                  name="edit"
-                ></textarea>
-                <button
-                  className="buttonsStyling"
-                  onClick={() => {
-                    setEditMode(false);
-                    items.name = edit;
-                  }}
-                >
+                  name="edit" />
+                <button className="buttonsStyling"
+                  onClick={() => {setEditMode(false); items.name = edit}}>
                   Save
                 </button>
               </>
@@ -198,13 +163,7 @@ const HomePage = (props) => {
             <div>{items.role}</div>
             <div style={{ display: "flex", justifyContent: "unset" }}>
               <div style={{ height: "30px", width: "30px" }}>
-                <Icon
-                  name="edit"
-                  onClick={() => {
-                    setEditItemId(items.id);
-                    setEditMode(true);
-                  }}
-                />
+                <Icon name="edit" onClick={() => { setEditItemId(items.id); setEditMode(true) }} />
               </div>
               <div style={{ height: "30px", width: "30px" }}>
                 <Icon name="delete" onClick={() => deleteHandler(items.id)} />
@@ -216,11 +175,7 @@ const HomePage = (props) => {
       <div className="lowerButtonsStyling">
         <div>
           <button
-            style={{
-              borderRadius: "15px",
-              color: "white",
-              backgroundColor: "red",
-            }}
+            style={{borderRadius: "15px", color: "white",backgroundColor: "red" }}
             onClick={() => deleteAllHandler(checkedBoxes)}
           >
             Delete Selected
