@@ -162,10 +162,10 @@ const HomePage = (props) => {
             <div>{items.email}</div>
             <div>{items.role}</div>
             <div style={{ display: "flex", justifyContent: "unset" }}>
-              <div style={{ height: "30px", width: "30px" }}>
+              <div style={{ height: "15px", width: "15px" }}>
                 <Icon name="edit" onClick={() => { setEditItemId(items.id); setEditMode(true) }} />
               </div>
-              <div style={{ height: "30px", width: "30px" }}>
+              <div style={{ height: "15px", width: "15px" }}>
                 <Icon name="delete" onClick={() => deleteHandler(items.id)} />
               </div>
             </div>
